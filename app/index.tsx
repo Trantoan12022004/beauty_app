@@ -1,63 +1,257 @@
-import React from 'react';
-import Gradient from '@/assets/icons/Gradient';
-import Logo from '@/assets/icons/Logo';
-import { Box } from '@/components/ui/box';
-import { ScrollView } from 'react-native';
-import { Text } from '@/components/ui/text';
+import React from "react";
+import Gradient from "@/assets/icons/Gradient";
+import Logo from "@/assets/icons/Logo";
+import { Box } from "@/components/ui/box";
+import { Dimensions, ImageBackground, ScrollView } from "react-native";
+import { Text } from "@/components/ui/text";
 
-import { Button, ButtonText } from '@/components/ui/button';
-import { useRouter } from 'expo-router';
-import { Icon } from '@/components/ui/icon';
+import { Button, ButtonText } from "@/components/ui/button";
+import { useRouter } from "expo-router";
+import { Icon } from "@/components/ui/icon";
 
-const FeatureCard = ({ iconSvg: IconSvg, name, desc }: any) => {
-  return (
-    <Box
-      className="flex-column md:flex-1 m-2 p-4 rounded-lg bg-background-0/40"
-      key={name}
-    >
-      <Box className="items-center flex flex-row">
-        <Icon as={IconSvg}/>
-        <Text className="font-medium ml-2 text-xl">{name}</Text>
-      </Box>
-      <Text className="mt-2">{desc}</Text>
-    </Box>
-  );
-};
-
+import { Card } from "@/components/ui/card";
+import { Heading } from "@/components/ui/heading";
+import { HStack } from "@/components/ui/hstack";
+import { Image } from "@/components/ui/image";
+import { Pressable } from "@/components/ui/pressable";
+import { VStack } from "@/components/ui/vstack";
+import { LinearGradient } from "expo-linear-gradient";
+import { Bolt, BookImage, Camera, ChevronRight, PencilOff } from "lucide-react-native";
+import Carousel from "react-native-reanimated-carousel";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
+import ImagePicker from "react-native-image-crop-picker";
+import { useState } from "react";
 export default function Home() {
-  const router = useRouter();
-  return (
-    <Box className="flex-1 bg-background-300 h-[100vh]">
-        <Box className="absolute h-[500px] w-[500px] lg:w-[700px] lg:h-[700px]">
-          <Gradient />
+    const router = useRouter();
+    const width = Dimensions.get("window").width;
+    const [image, setImage] = useState<string | null>(null);
+
+    const openCamera = async () => {
+        try {
+            const photo = await ImagePicker.openCamera({
+                width: 1000,
+                height: 400,
+                cropping: true,
+                compressImageQuality: 0.8,
+            });
+            setImage(photo.path);
+
+            // Chuyển sang màn hình preview nếu chụp thành công
+            router.push({
+                pathname: "/preview",
+                params: { imageUri: photo.path },
+            });
+        } catch (error: any) {
+            // Người dùng hủy chụp ảnh - không cần thông báo lỗi
+            if (error.message?.includes("cancelled")) {
+                console.log("Người dùng đã hủy chụp ảnh");
+                return;
+            }
+
+            // Lỗi quyền camera
+            if (error.message?.includes("permission")) {
+                console.error("Chưa cấp quyền camera");
+                // TODO: Hiển thị dialog yêu cầu cấp quyền
+                return;
+            }
+
+            // Lỗi khác
+            console.error("Lỗi camera:", error);
+        }
+    };
+    const data = [
+        {
+            title: "Chỉnh sửa",
+            desc: "Chỉnh sửa cơ thể & hơn thế nữa",
+            image: require("@/assets/images/img_home_banner_1.webp"),
+        },
+        {
+            title: "Trang điểm",
+            desc: "Hiệu ứng tự nhiên & sắc nét",
+            image: require("@/assets/images/img_home_banner_2.webp"),
+        },
+        {
+            title: "Trang điểm",
+            desc: "Hiệu ứng tự nhiên & sắc nét",
+            image: require("@/assets/images/img_home_banner_3.webp"),
+        },
+    ];
+
+    const makeupList = [
+        {
+            title: "Filter",
+            desc: "Chỉnh sửa cơ thể & hơn thế nữa",
+            image: require("@/assets/images/img_makeup_home_1.webp"),
+        },
+        {
+            title: "Filter",
+            desc: "Chỉnh sửa cơ thể & hơn thế nữa",
+            image: require("@/assets/images/img_makeup_home_2.webp"),
+        },
+        {
+            title: "Filter",
+            desc: "Chỉnh sửa cơ thể & hơn thế nữa",
+            image: require("@/assets/images/img_makeup_home_3.webp"),
+        },
+        {
+            title: "Filter",
+            desc: "Chỉnh sửa cơ thể & hơn thế nữa",
+            image: require("@/assets/images/img_makeup_home_4.webp"),
+        },
+    ];
+    return (
+        <Box className="flex-1 bg-background-0 h-[100vh]">
+            <SafeAreaView>
+                <ScrollView>
+                    <VStack>
+                        <LinearGradient
+                            colors={["#3b82f6", "#1e40af"]} // tương đương từ blue-500 đến blue-900
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}
+                            className="w-full h-24 px-4"
+                        >
+                            <HStack space="xl" className="justify-between mt-12 mb-4 mx-5">
+                                <Heading size="lg" className="text-white ">
+                                    Beauty Camera Sweet Makeup App
+                                </Heading>
+                                <Pressable onPress={() => console.log("Hello")} className="">
+                                    <Bolt size={24} color="white" />
+                                </Pressable>
+                            </HStack>
+                        </LinearGradient>
+
+                        <Carousel
+                            width={width}
+                            height={180}
+                            autoPlay
+                            data={data}
+                            scrollAnimationDuration={1500}
+                            renderItem={({ item }) => (
+                                <ImageBackground
+                                    source={item.image}
+                                    style={{ width, height: 180 }}
+                                    // imageStyle={{ borderRadius: 16 }}
+                                >
+                                    <VStack className="flex-1 justify-center px-6 bg-black/20">
+                                        <Text className="text-white text-3xl font-bold">
+                                            {item.title}
+                                        </Text>
+                                        <Text className="text-white text-lg mt-2">{item.desc}</Text>
+                                    </VStack>
+                                </ImageBackground>
+                            )}
+                        />
+
+                        <HStack className="my-4 mx-10 justify-between">
+                            <Card size="sm" variant="ghost" className="">
+                                <Pressable
+                                    onPress={openCamera}
+                                    className="w-16 h-16 bg-blue-500 rounded-full items-center justify-center mb-2"
+                                >
+                                    <Camera size={28} color="white" />
+                                </Pressable>
+                                <Text size="sm" bold>
+                                    Tự sướng
+                                </Text>
+                            </Card>
+                            <Card size="sm" variant="ghost" className="">
+                                <Pressable
+                                    onPress={() => console.log("click")}
+                                    className="w-16 h-16 bg-orange-500 rounded-full items-center justify-center mb-2"
+                                >
+                                    <PencilOff size={28} color="white" />
+                                </Pressable>
+                                <Text size="sm" bold>
+                                    Chỉnh sửa
+                                </Text>
+                            </Card>
+
+                            <Card size="sm" variant="ghost" className="">
+                                <Pressable
+                                    onPress={() => console.log("click")}
+                                    className="w-16 h-16 bg-pink-500 rounded-full items-center justify-center mb-2"
+                                >
+                                    <BookImage size={28} color="white" />
+                                </Pressable>
+                                <Text size="sm" bold>
+                                    Bộ sưu tập
+                                </Text>
+                            </Card>
+                        </HStack>
+
+                        <Box className="bg-primary-500 p-5 w-full h-32">
+                            <Text className="text-typography-0">Quảng cáo ở đây</Text>
+                        </Box>
+
+                        <Card size="sm" variant="ghost">
+                            <HStack space="xl" className="justify-between">
+                                <Heading size="sm" className="text-black ">
+                                    Trang điểm
+                                </Heading>
+                                <Pressable
+                                    onPress={() => console.log("Hello")}
+                                    className="d-flex flex-row items-center"
+                                >
+                                    <Text size="sm" className="text-blue-700 ">
+                                        Thêm
+                                    </Text>
+
+                                    <ChevronRight size={16} color="blue" />
+                                </Pressable>
+                            </HStack>
+
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                <HStack className="mt-4">
+                                    {makeupList.map((item, index) => (
+                                        <Pressable key={index} className="mr-2">
+                                            <Image
+                                                source={item.image}
+                                                alt={item.title}
+                                                className="w-28 h-40 rounded-xl"
+                                                resizeMode="cover"
+                                            />
+                                        </Pressable>
+                                    ))}
+                                </HStack>
+                            </ScrollView>
+                        </Card>
+
+                        <Card size="sm" variant="ghost">
+                            <HStack space="xl" className="justify-between">
+                                <Heading size="sm" className="text-black ">
+                                    Trang điểm
+                                </Heading>
+                                <Pressable
+                                    onPress={() => console.log("Hello")}
+                                    className="d-flex flex-row items-center"
+                                >
+                                    <Text size="sm" className="text-blue-700 ">
+                                        Thêm
+                                    </Text>
+
+                                    <ChevronRight size={16} color="blue" />
+                                </Pressable>
+                            </HStack>
+
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                <HStack className="mt-4">
+                                    {makeupList.map((item, index) => (
+                                        <Pressable key={index} className="mr-2">
+                                            <Image
+                                                source={item.image}
+                                                alt={item.title}
+                                                className="w-28 h-40 rounded-xl"
+                                                resizeMode="cover"
+                                            />
+                                        </Pressable>
+                                    ))}
+                                </HStack>
+                            </ScrollView>
+                        </Card>
+                    </VStack>
+                </ScrollView>
+            </SafeAreaView>
         </Box>
-      {/* <ScrollView
-        style={{ height: '100%' }}
-        contentContainerStyle={{ flexGrow: 1 }}
-      > */}
-        <Box className="flex flex-1 items-center mx-5 lg:my-24 lg:mx-32 py-safe">
-          <Box className="gap-10 base:flex-col sm:flex-row justify-between sm:w-[80%] md:flex-1">
-            <Box className="bg-background-template py-2 px-6 rounded-full items-center flex-column md:flex-row md:self-start">
-              <Text className="text-white font-medium">
-                Get started by editing
-              </Text>
-              <Text className="text-white font-medium ml-2">./App.tsx or ./app/index.tsx (or whatever entry point you have)</Text>
-            </Box>
-            <Button
-              size="md"
-              className="bg-primary-500 px-6 py-2 rounded-full"
-              onPress={() => {
-                router.push('/tabs/tab1');
-              }}
-            >
-              <ButtonText>Explore Tab Navigation</ButtonText>
-            </Button>
-          </Box>
-          <Box className="flex-1 justify-center items-center h-[20px] w-[300px] lg:h-[160px] lg:w-[400px]">
-            <Logo />
-          </Box>
-        </Box>
-      {/* </ScrollView> */}
-    </Box>
-  );
+    );
 }
