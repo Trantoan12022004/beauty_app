@@ -21,45 +21,10 @@ import Carousel from "react-native-reanimated-carousel";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import ImagePicker from "react-native-image-crop-picker";
-import { useState } from "react";
 export default function Home() {
     const router = useRouter();
     const width = Dimensions.get("window").width;
-    const [image, setImage] = useState<string | null>(null);
 
-    const openCamera = async () => {
-        try {
-            const photo = await ImagePicker.openCamera({
-                width: 1000,
-                height: 400,
-                cropping: true,
-                compressImageQuality: 0.8,
-            });
-            setImage(photo.path);
-
-            // Chuyển sang màn hình preview nếu chụp thành công
-            router.push({
-                pathname: "/preview",
-                params: { imageUri: photo.path },
-            });
-        } catch (error: any) {
-            // Người dùng hủy chụp ảnh - không cần thông báo lỗi
-            if (error.message?.includes("cancelled")) {
-                console.log("Người dùng đã hủy chụp ảnh");
-                return;
-            }
-
-            // Lỗi quyền camera
-            if (error.message?.includes("permission")) {
-                console.error("Chưa cấp quyền camera");
-                // TODO: Hiển thị dialog yêu cầu cấp quyền
-                return;
-            }
-
-            // Lỗi khác
-            console.error("Lỗi camera:", error);
-        }
-    };
     const data = [
         {
             title: "Chỉnh sửa",
@@ -109,12 +74,10 @@ export default function Home() {
                             colors={["#3b82f6", "#1e40af"]} // tương đương từ blue-500 đến blue-900
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 1 }}
-                            className="w-full h-24 px-4"
+                            className="w-full h-24"
                         >
-                            <HStack space="xl" className="justify-between mt-12 mb-4 mx-5">
-                                <Heading size="lg" className="text-white ">
-                                    Beauty Camera Sweet Makeup App
-                                </Heading>
+                            <HStack space="xl" className="justify-between mt-12 mb-4 px-4">
+                                <Text size="xl" className="text-white">Camera Sweet Makeup App</Text>
                                 <Pressable onPress={() => console.log("Hello")} className="">
                                     <Bolt size={24} color="white" />
                                 </Pressable>
@@ -146,7 +109,7 @@ export default function Home() {
                         <HStack className="my-4 mx-10 justify-between">
                             <Card size="sm" variant="ghost" className="">
                                 <Pressable
-                                    onPress={openCamera}
+                                    onPress={() => router.push("/selfie")}
                                     className="w-16 h-16 bg-blue-500 rounded-full items-center justify-center mb-2"
                                 >
                                     <Camera size={28} color="white" />
