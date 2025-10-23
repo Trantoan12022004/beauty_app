@@ -10,10 +10,12 @@ import { FlipHorizontal, X, ZapOff, ZoomIn } from "lucide-react-native";
 import { useRef, useState } from "react";
 import { StyleSheet, TouchableOpacity, View, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { usePhotoStore } from "@/store/usePhotoStore";
 const SelfieScreen = () => {
     const width = Dimensions.get("window").width;
     const height = Dimensions.get("window").height;
+    const { setPhotoUri } = usePhotoStore();
+    const { setOriginalUri } = usePhotoStore();
     const h = height * 0.6;
     const router = useRouter();
     const cameraRef = useRef<CameraView>(null);
@@ -62,17 +64,14 @@ const SelfieScreen = () => {
 
     const takePicture = async () => {
         if (cameraRef.current) {
-            const photo = await cameraRef.current.takePictureAsync({
-                quality: 1,
-            });
-            console.log("Photo taken:", photo);
-            router.push({
-                pathname: "/preview",
-                params: {
-                    photoUri: photo.uri,
+            const photo = await cameraRef.current.takePictureAsync({ quality: 1 });
+            const finalUri = photo.uri.startsWith("file://") ? photo.uri : `file://${photo.uri}`;
 
-                },
-            });
+            setOriginalUri(finalUri);
+            // ✅ Lưu cả ảnh gốc và ảnh hiện tại
+            setPhotoUri(finalUri);
+
+            router.push("/preview");
         }
     };
 
@@ -81,7 +80,7 @@ const SelfieScreen = () => {
             {/* Camera View */}
             <CameraView
                 ref={cameraRef}
-                style={[styles.camera, { height: height * 0.7 }]}
+                style={[styles.camera, { height: height * 0.75 }]}
                 facing={facing}
                 enableTorch={flash}
                 zoom={zoom}
