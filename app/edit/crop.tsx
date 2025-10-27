@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { View, TouchableOpacity, Text, ScrollView, Alert } from "react-native";
+import { View, TouchableOpacity, Text, ScrollView, Alert, Dimensions } from "react-native";
 import {
     ArrowLeft,
     Check,
@@ -10,7 +10,6 @@ import {
     Square,
     RectangleVertical,
     RectangleHorizontal,
-    
 } from "lucide-react-native";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -43,7 +42,8 @@ export default function CropScreen() {
     const { photoUri, setPhotoUri } = usePhotoStore();
     const cropViewRef = useRef<CropView>(null);
     const [selectedRatio, setSelectedRatio] = useState<string>("free");
-
+    const { width } = Dimensions.get("window");
+    const { height } = Dimensions.get("window");
     const handleCrop = async () => {
         if (cropViewRef.current && photoUri) {
             try {
@@ -119,8 +119,8 @@ export default function CropScreen() {
                     ref={cropViewRef}
                     onImageCrop={onImageCrop}
                     style={{
-                        width: "100%",
-                        height: "100%",
+                        width: width,
+                        height: height,
                         backgroundColor: "#000",
                     }}
                     // Additional props for react-native-image-crop-tools
@@ -181,11 +181,17 @@ export default function CropScreen() {
 
                     {/* Instructions */}
                     <View className="mt-4 flex-row justify-center gap-8">
-                        <TouchableOpacity className="gap-2" onPress={() => cropViewRef.current?.rotateImage(false)}>
+                        <TouchableOpacity
+                            className="gap-2"
+                            onPress={() => cropViewRef.current?.rotateImage(false)}
+                        >
                             <CornerUpLeft color="#ffffff" size={32} />
                             <Text className="text-xs font-medium text-white">Trái</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity className="gap-2" onPress={() => cropViewRef.current?.rotateImage(true)}>
+                        <TouchableOpacity
+                            className="gap-2"
+                            onPress={() => cropViewRef.current?.rotateImage(true)}
+                        >
                             <CornerUpRight color="#ffffff" size={32} />
                             <Text className="text-xs font-medium text-white">Phải</Text>
                         </TouchableOpacity>

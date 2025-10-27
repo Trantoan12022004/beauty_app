@@ -21,10 +21,27 @@ import Carousel from "react-native-reanimated-carousel";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import ImagePicker from "react-native-image-crop-picker";
+import { usePhotoStore } from "@/store/usePhotoStore";
 export default function Home() {
     const router = useRouter();
     const width = Dimensions.get("window").width;
+    const { setPhotoUri, setOriginalUri } = usePhotoStore();
 
+    const nextEdit = () => {
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: false,
+            mediaType: "photo",
+        }).then((image) => {
+            console.log("Selected image path:", image.path);
+            setOriginalUri(image.path);
+            setPhotoUri(image.path);
+            router.push({
+                pathname: "/edit",
+            });
+        });
+    };
     const data = [
         {
             title: "Chỉnh sửa",
@@ -77,7 +94,9 @@ export default function Home() {
                             className="w-full h-24"
                         >
                             <HStack space="xl" className="justify-between mt-12 mb-4 px-4">
-                                <Text size="xl" className="text-white">Camera Sweet Makeup App</Text>
+                                <Text size="xl" className="text-white">
+                                    Camera Sweet Makeup App
+                                </Text>
                                 <Pressable onPress={() => console.log("Hello")} className="">
                                     <Bolt size={24} color="white" />
                                 </Pressable>
@@ -120,7 +139,7 @@ export default function Home() {
                             </Card>
                             <Card size="sm" variant="ghost" className="">
                                 <Pressable
-                                    onPress={() => console.log("click")}
+                                    onPress={nextEdit}
                                     className="w-16 h-16 bg-orange-500 rounded-full items-center justify-center mb-2"
                                 >
                                     <PencilOff size={28} color="white" />

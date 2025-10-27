@@ -19,6 +19,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Dimensions, ImageBackground, ScrollView, Alert } from "react-native";
 import { usePhotoStore } from "@/store/usePhotoStore";
 export default function EditScreen() {
+    const { width } = Dimensions.get("window");
+    const { height } = Dimensions.get("window");
     const { photoUri } = usePhotoStore();
 
     console.log("Photo Edit:", photoUri);
@@ -33,25 +35,30 @@ export default function EditScreen() {
             pathname: "/edit/crop",
         });
     };
-const backToPreview = () => {
-  Alert.alert(
-    "Xác nhận quay lại",
-    "Ảnh đã chỉnh sửa sẽ không được lưu. Bạn có chắc chắn muốn quay lại không?",
-    [
-      {
-        text: "Hủy",
-        style: "cancel",
-      },
-      {
-        text: "Có",
-        style: "destructive",
-        onPress: () => {
-          router.back(); // hoặc router.replace("/preview") nếu muốn chắc chắn quay lại đúng màn
-        },
-      },
-    ]
-  );
-};
+    const nextAdjust = () => {
+        router.push({
+            pathname: "/edit/adjust",
+        });
+    };
+    const backToPreview = () => {
+        Alert.alert(
+            "Xác nhận quay lại",
+            "Ảnh đã chỉnh sửa sẽ không được lưu. Bạn có chắc chắn muốn quay lại không?",
+            [
+                {
+                    text: "Hủy",
+                    style: "cancel",
+                },
+                {
+                    text: "Có",
+                    style: "destructive",
+                    onPress: () => {
+                        router.back(); // hoặc router.replace("/preview") nếu muốn chắc chắn quay lại đúng màn
+                    },
+                },
+            ]
+        );
+    };
 
     return (
         <View className="flex-1 bg-black">
@@ -90,8 +97,8 @@ const backToPreview = () => {
                         source={{ uri: photoUri }}
                         resizeMode="contain"
                         style={{
-                            width: "100%",
-                            height: "100%",
+                            width: width,
+                            height: height,
                         }}
                     />
                 ) : (
@@ -114,7 +121,10 @@ const backToPreview = () => {
                         </VStack>
 
                         <VStack className="items-center">
-                            <TouchableOpacity className="w-20 h-20 items-center justify-center rounded-lg">
+                            <TouchableOpacity
+                                onPress={nextAdjust}
+                                className="w-20 h-20 items-center justify-center rounded-lg"
+                            >
                                 <Sliders size={22} color="#ffff" />
                             </TouchableOpacity>
                             <Text className="text-white text-xs mt-1">Điều chỉnh</Text>

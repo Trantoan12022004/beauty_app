@@ -19,6 +19,15 @@ export default function EditLayout() {
                     title: "Cắt ảnh",
                 }}
             />
+            <Stack.Screen
+                name="adjust"
+                options={{
+                    headerShown: false,
+                    presentation: "modal",
+                    animation: "none",
+                    title: "Điều chỉnh ảnh",
+                }}
+            />
         </Stack>
     );
 }
