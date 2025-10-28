@@ -40,6 +40,11 @@ export default function EditScreen() {
             pathname: "/edit/adjust",
         });
     };
+    const nextFilter = () => {
+        router.push({
+            pathname: "/edit/filter",
+        });
+    };
     const backToPreview = () => {
         Alert.alert(
             "Xác nhận quay lại",
@@ -145,7 +150,9 @@ export default function EditScreen() {
                         </VStack>
 
                         <VStack className="items-center">
-                            <TouchableOpacity className="w-20 h-20 items-center justify-center  rounded-lg">
+                            <TouchableOpacity 
+                            onPress={nextFilter}
+                            className="w-20 h-20 items-center justify-center  rounded-lg">
                                 <Palette size={22} color="#ffff" />
                             </TouchableOpacity>
                             <Text className="text-white text-xs mt-1">Bộ lọc</Text>

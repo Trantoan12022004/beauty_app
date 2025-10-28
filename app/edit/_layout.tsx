@@ -28,6 +28,15 @@ export default function EditLayout() {
                     title: "Điều chỉnh ảnh",
                 }}
             />
+            <Stack.Screen
+                name="filter"
+                options={{
+                    headerShown: false,
+                    presentation: "modal",
+                    animation: "none",
+                    title: "Bộ lọc ảnh",
+                }}
+            />
         </Stack>
     );
 }
