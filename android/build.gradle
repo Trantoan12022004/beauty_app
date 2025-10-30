@@ -1,5 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+// Override ext properties to prefer NDK r21 for native builds (helps C++ runtime linking)
+ext {
+  // Use the system NDK (the SDK already contains NDK r27). Forcing old NDK r21
+  // caused C++20 standard library features to be missing during compilation.
+  // Set this to the installed NDK you want to use; leaving it to r27 aligns
+  // with the SDK-managed NDK on this machine.
+  ndkVersion = "27.1.12297006"
+}
+
 buildscript {
   repositories {
     google()

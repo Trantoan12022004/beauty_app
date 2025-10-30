@@ -1,0 +1,272 @@
+[
+  {
+    "id": "normal",
+    "label": "None",
+    "ops": [
+      [
+        "brightness",
+        1
+      ]
+    ]
+  },
+  {
+    "id": "black-white",
+    "label": "Black-White",
+    "ops": [
+      [
+        "grayscale"
+      ]
+    ]
+  },
+  {
+    "id": "brightness",
+    "label": "Brightness",
+    "ops": [
+      [
+        "brightness",
+        1.15
+      ]
+    ]
+  },
+  {
+    "id": "contrast",
+    "label": "Contrast",
+    "ops": [
+      [
+        "contrast",
+        1.2
+      ]
+    ]
+  },
+  {
+    "id": "cross-process",
+    "label": "Cross-process",
+    "ops": [
+      [
+        "saturate",
+        1.15
+      ],
+      [
+        "contrast",
+        1.05
+      ],
+      [
+        "colorShift",
+        0.001,
+        0.014,
+        0.008
+      ]
+    ]
+  },
+  {
+    "id": "documentary",
+    "label": "Documentary",
+    "ops": [
+      [
+        "grayscale"
+      ],
+      [
+        "contrast",
+        1.25
+      ],
+      [
+        "brightness",
+        0.95
+      ]
+    ]
+  },
+  {
+    "id": "due-tone",
+    "label": "Due-tone",
+    "ops": [
+      [
+        "grayscale"
+      ],
+      [
+        "tint"
+      ],
+      [
+        "colorShift",
+        0,
+        0,
+        -0.019
+      ]
+    ]
+  },
+  {
+    "id": "fill-light",
+    "label": "Fill-light",
+    "ops": [
+      [
+        "brightness",
+        1.08
+      ],
+      [
+        "contrast",
+        0.98
+      ]
+    ]
+  },
+  {
+    "id": "grain",
+    "label": "Grain",
+    "ops": [
+      [
+        "saturate",
+        0.96
+      ],
+      [
+        "contrast",
+        1.05
+      ],
+      [
+        "brightness",
+        0.98
+      ]
+    ],
+    "overlay": {
+      "file": "img_filter_grain.webp",
+      "opacity": 0.12
+    }
+  },
+  {
+    "id": "gray-scale",
+    "label": "Gray-scale",
+    "ops": [
+      [
+        "grayscale"
+      ]
+    ]
+  },
+  {
+    "id": "lomish",
+    "label": "Lomish",
+    "ops": [
+      [
+        "saturate",
+        1.3
+      ],
+      [
+        "contrast",
+        1.15
+      ],
+      [
+        "warm"
+      ]
+    ]
+  },
+  {
+    "id": "negative",
+    "label": "Negative",
+    "ops": [
+      [
+        "invert"
+      ]
+    ]
+  },
+  {
+    "id": "posterize",
+    "label": "Posterize",
+    "ops": [
+      [
+        "contrast",
+        1.35
+      ],
+      [
+        "saturate",
+        1.05
+      ]
+    ]
+  },
+  {
+    "id": "saturate",
+    "label": "Saturate",
+    "ops": [
+      [
+        "saturate",
+        1.5
+      ]
+    ]
+  },
+  {
+    "id": "sepia",
+    "label": "Sepia",
+    "ops": [
+      [
+        "sepia"
+      ]
+    ]
+  },
+  {
+    "id": "sharpen",
+    "label": "Sharpen",
+    "ops": [
+      [
+        "contrast",
+        1.18
+      ],
+      [
+        "saturate",
+        1.03
+      ]
+    ]
+  },
+  {
+    "id": "temperature",
+    "label": "Temperature",
+    "ops": [
+      [
+        "warm"
+      ],
+      [
+        "colorShift",
+        0.011,
+        0.014,
+        0.015
+      ]
+    ]
+  },
+  {
+    "id": "tint",
+    "label": "Tint",
+    "ops": [
+      [
+        "tint"
+      ],
+      [
+        "colorShift",
+        0.018,
+        0.002,
+        0.018
+      ]
+    ]
+  },
+  {
+    "id": "vignette",
+    "label": "Vignette",
+    "ops": [
+      [
+        "brightness",
+        0.92
+      ],
+      [
+        "contrast",
+        1.08
+      ],
+      [
+        "saturate",
+        0.94
+      ],
+      [
+        "colorShift",
+        -0.02,
+        -0.02,
+        -0.02
+      ]
+    ],
+    "overlay": {
+      "file": "img_filter_vignette.webp",
+      "opacity": 0.24
+    }
+  }
+]
